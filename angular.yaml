@@ -1,0 +1,91 @@
+---
+
+- hosts: all
+  become_user: root
+  become: true
+  
+  vars:
+    repo_path: sanjeevkumarsr/architecture:${IMAGE_TAG}
+    dest_path: /home/ec2-user/arch
+    
+    
+  tasks:
+    - name: Install Python 3 pip package
+      yum:
+        name: python-pip
+        state: present
+        
+        
+    - name: Install docker
+      yum:
+        name: docker
+        state: present
+        
+    - name: start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+        
+        
+    - name: Docker python package
+      pip:
+        name: docker-py
+        state: present
+        
+        
+    - name: create directory
+      file:
+        state: directory
+        dest: "{{dest_path}}"
+        
+        
+    - name: copy files
+      copy:
+        src: ./
+        dest: "{{dest_path}}"
+    
+    - name: Add the Node.js repository
+      shell: 'curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -'
+      
+    - name: Install Node.js
+      yum:
+        name: nodejs
+        state: present
+        
+    - name: Install npm
+      command: npm install
+      args:
+        chdir: "{{ dest_path }}" 
+        
+    - name: Install Angular
+      npm:
+        name: '@angular/cli'
+        global: yes
+        state: present
+      
+      
+    - name: Install Node packages
+      npm:
+        path: "{{ dest_path }}"
+        
+    - name: Build the application
+      command: ng build --configuration production
+      args:
+        chdir: "{{ dest_path }}"
+        
+    - name: Install Install Process manager tool
+      npm:
+        name: pm2
+        global: yes
+        state: present
+        
+    - name: pm2 status command
+      command: pm2 status
+      register: pm2_status
+      
+    - name: Start PM2 process with npm
+      become_user: root
+      shell: pm2 start npm -- start ./src/index.html --name "{IMAGE_TAG}-Service"
+      args:
+        chdir: "{{ dest_path }}"
