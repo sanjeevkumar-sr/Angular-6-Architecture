@@ -53,10 +53,10 @@
         name: nodejs
         state: present
         
-    - name: Install npm
+    - name: Install npm project
       command: npm install
-      args:
-        chdir: "{{ dest_path }}" 
+	    args:
+        chdir: "{{ dest_path }}"
         
     - name: Install Angular
       npm:
