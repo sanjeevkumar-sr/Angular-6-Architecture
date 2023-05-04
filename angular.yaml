@@ -5,7 +5,7 @@
   become: true
   
   vars:
-    repo_path: sanjeevkumarsr/architecture:${IMAGE_TAG}
+    repo_path: sanjeevkumarsr/arch:${IMAGE_TAG}
     dest_path: /home/ec2-user/arch
     
     
@@ -46,30 +46,32 @@
         dest: "{{dest_path}}"
     
     - name: Add the Node.js repository
-      shell: curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+      shell: 'curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -'
       
-    - name: Install Node.js
+    - name: Install Node.js and npm
       yum:
         name: nodejs
         state: present
         
     - name: Install project dependencies
-      command: npm install -g 
+      command: npm install
       args:
         chdir: "{{ dest_path }}"
+        
         
     - name: Install Angular
       npm:
         name: '@angular/cli'
         global: yes
         state: present
-     
-        
-    - name: Build the application
-      command: ng build --configuration production
-      args:
-        chdir: "{{ dest_path }}"
       
+      
+    - name: Install Node packages
+      npm:
+        path: "{{ dest_path }}"
+      
+    
+        
     - name: Install Install Process manager tool
       npm:
         name: pm2
@@ -80,7 +82,7 @@
       command: pm2 status
       register: pm2_status
       
-    - name: Start PM2 process with npm
-      shell: pm2 start npm -- start ./src/index.html --name "angular-io-example"
+    - name: Start service
+      command: pm2 start npm -- start ./src/index.html --name "angular-io-example"
       args:
         chdir: "{{ dest_path }}"
