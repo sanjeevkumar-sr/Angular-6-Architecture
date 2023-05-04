@@ -46,7 +46,7 @@
         dest: "{{dest_path}}"
     
     - name: Add the Node.js repository
-      shell: 'curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -'
+      shell: curl -sL https://rpm.nodesource.com/setup_17.x | sudo bash -
       
     - name: Install Node.js
       yum:
@@ -54,7 +54,7 @@
         state: present
         
     - name: Install project dependencies
-      command: npm install -g npm@9.6.6
+      command: npm install
       args:
         chdir: "{{ dest_path }}"
         
