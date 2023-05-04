@@ -56,7 +56,7 @@
     - name: Install npm
       command: npm install
       args:
-          chdir:  "{{ dest_path }}"
+         chdir: "{{ dest_path }}"
         
     - name: Install Angular
       npm:
