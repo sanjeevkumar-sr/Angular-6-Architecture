@@ -46,7 +46,7 @@
         dest: "{{dest_path}}"
     
     - name: Add the Node.js repository
-      shell: curl -sL https://rpm.nodesource.com/setup_17.x | sudo bash -
+      shell: curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
       
     - name: Install Node.js
       yum:
@@ -69,7 +69,7 @@
       command: ng build --configuration production
       args:
         chdir: "{{ dest_path }}"
-        
+      
     - name: Install Install Process manager tool
       npm:
         name: pm2
