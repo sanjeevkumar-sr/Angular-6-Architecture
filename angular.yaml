@@ -82,7 +82,7 @@
       command: pm2 status
       register: pm2_status
       
-    - name: Start service
-      command: pm2 start npm -- start ./src/index.html --name "angular-io-example"
+    - name: Start service 
+      command: pm2 start npm -- name "angular-io-example" -- start ./src/index.html
       args:
         chdir: "{{ dest_path }}"
