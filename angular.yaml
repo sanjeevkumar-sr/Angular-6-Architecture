@@ -63,11 +63,7 @@
         name: '@angular/cli'
         global: yes
         state: present
-      
-      
-    - name: Install Node packages
-      npm:
-        path: "{{ dest_path }}"
+     
         
     - name: Build the application
       command: ng build --configuration production
