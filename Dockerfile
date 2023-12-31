@@ -17,10 +17,10 @@ RUN npm install
 COPY . .
 
 # Build the Angular app
-RUN ng build
+RUN ng serve
 
 # Expose the port on which the app will run
 EXPOSE 4200
 
 # Command to run the application with pm2
-CMD ["pm2-runtime", "start", "npm", "--", "start", "/src/]
+CMD ["pm2-runtime", "start", "npm", "--", "start", "/src/index.html"]
