@@ -19,6 +19,9 @@ COPY . .
 # Build the Angular app
 RUN ng serve
 
+# Install pm2 globally
+RUN npm install -g pm2
+
 # Expose the port on which the app will run
 EXPOSE 4200
 
