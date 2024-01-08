@@ -5,11 +5,11 @@
   "description": "Example project from an angular.io guide.",
   "scripts": {
     "ng": "ng",
-    "build": "ng build --prod",
-    "start": "ng serve",
+    "start": "ng serve && npm run opener",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "tslint ./src/**/*.ts -t verbose",
-    "e2e": "ng e2e"
+    "opener": "node -e \"require('open')('http://localhost:4200/host.html')\""
   },
   "keywords": [],
   "author": "",
